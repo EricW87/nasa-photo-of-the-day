@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import PictureCard from "./PictureCard"
 
 export default function Pictures() {
-    const [pictures, setPictures] = useState([]);
+    const [picture, setPicture] = useState([]);
 
     useEffect(() => {
         axios
-        .get(`https://api.nasa.gov/planetary/apod`)
+        .get(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2012-03-14`)
         .then(response => {
             console.log(response);
-            setPictures(response.data);
+            setPicture(response.data);
         })
         .catch(err => {
             console.log(`Error: ${err}`);
@@ -17,15 +18,12 @@ export default function Pictures() {
     }, []);
 
     return (
-        <div className="pictures">
-            {pictures.map((pic) =>{
-                return (
-                    <div>
-                        <img src={pic.url}/>
-                    </div>
-                );
-            })}
-
+        <div className="picture">
+            <PictureCard 
+                url={picture.url} 
+                alt={picture.title} 
+                explanation={picture.explanation}
+            />
         </div>
     );
 }
