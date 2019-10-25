@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PictureCard from "./PictureCard"
 
-export default function Pictures() {
+const Pictures = props => {
     const [picture, setPicture] = useState([]);
 
     useEffect(() => {
         axios
-        .get(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2012-03-14`)
+        .get(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${props.date.getFullYear()}-${props.date.getMonth() + 1}-${props.date.getDate()}`)
         .then(response => {
             console.log(response);
             setPicture(response.data);
@@ -15,11 +15,13 @@ export default function Pictures() {
         .catch(err => {
             console.log(`Error: ${err}`);
         });
-    }, []);
+    }, [props.date]);
 
     return (
         <div className="picture">
-            <PictureCard 
+            <PictureCard
+                title={picture.title} 
+                date={picture.date}
                 url={picture.url} 
                 alt={picture.title} 
                 explanation={picture.explanation}
@@ -27,3 +29,5 @@ export default function Pictures() {
         </div>
     );
 }
+
+export default Pictures;
